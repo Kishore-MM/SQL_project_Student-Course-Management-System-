@@ -1,0 +1,64 @@
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Age INT,
+    Email VARCHAR(100) UNIQUE,
+    Department VARCHAR(50)
+);
+CREATE TABLE Courses (
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(100),
+    Instructor VARCHAR(50),
+    Credits INT
+);
+CREATE TABLE Enrollments (
+    EnrollmentID INT PRIMARY KEY,
+    StudentID INT,
+    CourseID INT,
+    EnrollmentDate DATE,
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
+);
+INSERT INTO Students VALUES
+(1, 'Alice', 20, 'alice@example.com', 'Computer Science'),
+(2, 'Bob', 22, 'bob@example.com', 'Mechanical'),
+(3, 'Charlie', 21, 'charlie@example.com', 'Electronics');
+
+
+INSERT INTO Courses VALUES
+(101, 'Database Systems', 'Dr. Rao', 3),
+(102, 'Operating Systems', 'Prof. Singh', 4),
+(103, 'Thermodynamics', 'Dr. Khan', 3);
+
+
+INSERT INTO Enrollments VALUES
+(1, 1, 101, '2025-01-10'),
+(2, 1, 102, '2025-01-15'),
+(3, 2, 103, '2025-01-12'),
+(4, 3, 101, '2025-01-20');
+
+
+SELECT * FROM Students;
+
+
+SELECT * FROM Courses WHERE Instructor = 'Dr. Rao';
+
+
+SELECT s.Name, c.CourseName 
+FROM Students s
+JOIN Enrollments e ON s.StudentID = e.StudentID
+JOIN Courses c ON e.CourseID = c.CourseID
+WHERE c.CourseName = 'Database Systems';
+
+
+SELECT Department, COUNT(*) AS TotalStudents
+FROM Students
+GROUP BY Department;
+
+
+SELECT s.Name, c.CourseName, e.EnrollmentDate
+FROM Students s
+JOIN Enrollments e ON s.StudentID = e.StudentID
+JOIN Courses c ON e.CourseID = c.CourseID;
+
+
